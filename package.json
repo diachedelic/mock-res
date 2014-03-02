@@ -1,0 +1,25 @@
+{
+  "name": "mock-res",
+  "version": "0.0.0",
+  "description": "Mocks node.js http.ServerResponse. See also `mock-req`.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diachedelic/mock-res.git"
+  },
+  "keywords": [
+    "mock",
+    "http",
+    "ServerResponse",
+    "response",
+    "res"
+  ],
+  "author": "James Diacono",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/diachedelic/mock-res/issues"
+  }
+}
