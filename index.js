@@ -1,16 +1,14 @@
 // Mocks http.ServerResponse
 
-module.exports = MockResponse;
+module.exports = MockRes;
 
-var Writable = require('stream').Writable,
+var Transform = require('stream').Transform,
 	util = require('util');
 
-function MockResponse(finish) {
-	Writable.call(this, {
-		decodeStrings: false
-	});
+function MockRes(finish) {
+	Transform.call(this);
 
-	this.statusCode = null;
+	this.statusCode = 200;
 
 	this._data = [];
 	this._headers = {};
@@ -18,29 +16,39 @@ function MockResponse(finish) {
 		this.on('finish', finish);
 }
 
-util.inherits(MockResponse, Writable);
+util.inherits(MockRes, Transform);
 
-MockResponse.prototype.setHeader = function(name, value) {
-	this._headers[name] = value;
+MockRes.prototype._transform = function(chunk, encoding, next) {
+	this.push(chunk);
+	next();
 };
 
-MockResponse.prototype._write = function(chunk, encoding, callback) {
-	this._data.push(chunk);
-	callback();
+MockRes.prototype.setHeader = function(name, value) {
+	this._headers[name.toLowerCase()] = value;
 };
 
-MockResponse.prototype._getJSON = function() {
-	return JSON.parse(this._data.join(''));
+MockRes.prototype.getHeader = function(name) {
+	return this._headers[name.toLowerCase()];
+};
+
+MockRes.prototype.removeHeader = function(name) {
+	delete this._headers[name.toLowerCase()];
+};
+
+MockRes.prototype._getString = function() {
+	return Buffer.concat(this._readableState.buffer).toString();
+};
+
+MockRes.prototype._getJSON = function() {
+	return JSON.parse(this._getString());
 };
 
 /* Not implemented:
-MockResponse.prototype.writeContinue()
-MockResponse.prototype.writeHead(statusCode, [reasonPhrase], [headers])
-MockResponse.prototype.setTimeout(msecs, callback)
-MockResponse.prototype.statusCode
-MockResponse.prototype.headersSent
-MockResponse.prototype.sendDate
-MockResponse.prototype.getHeader(name)
-MockResponse.prototype.removeHeader(name)
-MockResponse.prototype.addTrailers(headers)
+MockRes.prototype.writeContinue()
+MockRes.prototype.writeHead(statusCode, [reasonPhrase], [headers])
+MockRes.prototype.setTimeout(msecs, callback)
+MockRes.prototype.statusCode
+MockRes.prototype.headersSent
+MockRes.prototype.sendDate
+MockRes.prototype.addTrailers(headers)
 */
