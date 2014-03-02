@@ -92,6 +92,16 @@ var tests = [
 
 			done();
 		});
+	},
+
+	function can_set_status_code(done) {
+		var res = new MockResponse();
+
+		assert.equal(res.statusCode, 200); // default
+		res.statusCode = 500;
+		assert.equal(res.statusCode, 500);
+
+		done();
 	}
 
 ];
