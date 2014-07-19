@@ -1,4 +1,5 @@
 var assert = require('assert'),
+	STATUS_CODES = require('http').STATUS_CODES,
 	MockResponse = require('./index');
 
 var tests = [
@@ -40,6 +41,70 @@ var tests = [
 
 		res.removeHeader('Type'); // case sensitive???
 		assert(!res.getHeader('type'));
+
+		done();
+	},
+
+	function can_write_head(done) {
+		var res = new MockResponse();
+
+		res.writeHead(401);
+
+		assert.equal(res.statusCode, 401);
+		assert.equal(res.statusMessage, STATUS_CODES['401']);
+
+		done();
+	},
+
+	function can_write_head_with_reason(done) {
+		var res = new MockResponse();
+
+		res.writeHead(401, 'Disauthorized');
+
+		assert.equal(res.statusCode, 401);
+		assert.equal(res.statusMessage, 'Disauthorized');
+
+		done();
+	},
+
+	function can_write_head_with_headers(done) {
+		var res = new MockResponse();
+
+		res.writeHead(404, {Type: 'x', foo: 'bar'});
+
+		assert.equal(res.getHeader('Type'), 'x');
+		assert.equal(res.getHeader('type'), 'x');
+		assert.equal(res.getHeader('foo'), 'bar');
+		assert.equal(res.getHeader('FOO'), 'bar');
+
+		assert.equal(res.statusCode, 404);
+		assert.equal(res.statusMessage, STATUS_CODES['404']);
+
+		done();
+	},
+
+	function can_write_head_with_reason_and_headers(done) {
+		var res = new MockResponse();
+
+		res.writeHead(500, 'something failed', {Type: 'x'});
+
+		assert.equal(res.getHeader('type'), 'x');
+
+		assert.equal(res.statusCode, 500);
+		assert.equal(res.statusMessage, 'something failed');
+
+		done();
+	},
+
+	function can_write_head_unknown_code(done) {
+		var res = new MockResponse();
+
+		res.writeHead(299, {Type: 'x'});
+
+		assert.equal(res.getHeader('type'), 'x');
+
+		assert.equal(res.statusCode, 299);
+		assert.equal(res.statusMessage, 'unknown');
 
 		done();
 	},
