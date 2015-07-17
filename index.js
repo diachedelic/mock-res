@@ -13,7 +13,7 @@ function MockServerResponse(finish) {
 	this.statusCode = 200;
 	this.statusMessage = STATUS_CODES[this.statusCode];
 
-	this._headers = {};
+	this._header = this._headers = {};
 	if (typeof finish === 'function')
 		this.on('finish', finish);
 }
