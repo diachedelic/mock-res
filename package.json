@@ -1,6 +1,6 @@
 {
   "name": "mock-res",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Mocks node.js http.ServerResponse. See also `mock-req`.",
   "main": "index.js",
   "scripts": {
