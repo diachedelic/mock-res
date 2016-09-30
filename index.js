@@ -16,12 +16,15 @@ function MockServerResponse(finish) {
 	this._header = this._headers = {};
 	if (typeof finish === 'function')
 		this.on('finish', finish);
+
+	this._responseData = []
 }
 
 util.inherits(MockServerResponse, Transform);
 
 MockServerResponse.prototype._transform = function(chunk, encoding, next) {
 	this.push(chunk);
+	this._responseData.push(chunk)
 	next();
 };
 
@@ -52,7 +55,7 @@ MockServerResponse.prototype.writeHead = function(statusCode, reason, headers) {
 };
 
 MockServerResponse.prototype._getString = function() {
-	return Buffer.concat(this._readableState.buffer).toString();
+	return Buffer.concat(this._responseData);
 };
 
 MockServerResponse.prototype._getJSON = function() {
