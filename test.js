@@ -115,7 +115,7 @@ var tests = [
 		res.write('DOG');
 		res.end();
 
-		assert.equal(res._getString(), 'bigDOG');
+		assert.strictEqual(res._getString(), 'bigDOG');
 
 		done();
 	},
