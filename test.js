@@ -1,4 +1,5 @@
 var assert = require('assert'),
+	fs = require('fs'),
 	STATUS_CODES = require('http').STATUS_CODES,
 	MockResponse = require('./index');
 
@@ -167,7 +168,20 @@ var tests = [
 		assert.equal(res.statusCode, 500);
 
 		done();
-	}
+	},
+
+	function emits_finish_after_pipe(done) {
+		var res = new MockResponse();
+		var src = fs.createReadStream(__filename);
+
+		res.on('finish', function() {
+			done();
+		});
+
+		res.on('error', assert.fail);
+
+		src.pipe(res);
+	},
 
 ];
 
