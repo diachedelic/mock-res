@@ -173,8 +173,14 @@ var tests = [
 	function emits_finish_after_pipe(done) {
 		var res = new MockResponse();
 		var src = fs.createReadStream(__filename);
+		var endCalled = false;
+
+		src.on('end', function() {
+			endCalled = true;
+		})
 
 		res.on('finish', function() {
+			assert(endCalled);
 			done();
 		});
 
