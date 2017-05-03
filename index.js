@@ -62,6 +62,12 @@ MockServerResponse.prototype._getJSON = function() {
 	return JSON.parse(this._getString());
 };
 
+Object.defineProperty(MockServerResponse.prototype, 'finished', {
+    get: function() {
+        return this._writableState.finished;
+    }
+});
+
 /* Not implemented:
 MockServerResponse.prototype.writeContinue()
 MockServerResponse.prototype.setTimeout(msecs, callback)
