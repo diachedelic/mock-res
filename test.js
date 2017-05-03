@@ -189,6 +189,22 @@ var tests = [
 		src.pipe(res);
 	},
 
+	function sets_finished_after_pipe(done) {
+		var res = new MockResponse();
+		var src = fs.createReadStream(__filename);
+
+		res.on('finish', function() {
+			assert.strictEqual(res.finished, true);
+			done();
+		});
+
+		res.on('error', assert.fail);
+
+		assert.strictEqual(res.finished, false);
+
+		src.pipe(res);
+	},
+
 ];
 
 var doneCount = 0;
