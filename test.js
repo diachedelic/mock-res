@@ -189,22 +189,17 @@ var tests = [
 		src.pipe(res);
 	},
 
-	function sets_finished_after_pipe(done) {
+	function sets_finished_after_end_called(done) {
 		var res = new MockResponse();
-		var src = fs.createReadStream(__filename);
-
-		res.on('finish', function() {
-			assert.strictEqual(res.finished, true);
-			done();
-		});
-
-		res.on('error', assert.fail);
 
 		assert.strictEqual(res.finished, false);
 
-		src.pipe(res);
-	},
+		res.setHeader('Location', 'http://example.com');
+		res.statusCode = 302;
+		res.end();
 
+		assert.strictEqual(res.finished, true);
+	},
 ];
 
 var doneCount = 0;

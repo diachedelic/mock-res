@@ -18,6 +18,8 @@ function MockServerResponse(finish) {
 		this.on('finish', finish);
 
 	this._responseData = []
+
+	this.finished = false;
 }
 
 util.inherits(MockServerResponse, Transform);
@@ -62,11 +64,10 @@ MockServerResponse.prototype._getJSON = function() {
 	return JSON.parse(this._getString());
 };
 
-Object.defineProperty(MockServerResponse.prototype, 'finished', {
-    get: function() {
-        return this._writableState.finished;
-    }
-});
+MockServerResponse.prototype.end = function() {
+	Transform.prototype.end.apply(this, arguments);
+	this.finished = true;
+}
 
 /* Not implemented:
 MockServerResponse.prototype.writeContinue()
