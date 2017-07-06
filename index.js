@@ -38,6 +38,10 @@ MockServerResponse.prototype.getHeader = function(name) {
 	return this._headers[name.toLowerCase()];
 };
 
+MockServerResponse.prototype.getHeaders = function() {
+	return this._headers;
+};
+
 MockServerResponse.prototype.removeHeader = function(name) {
 	delete this._headers[name.toLowerCase()];
 };
