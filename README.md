@@ -79,5 +79,6 @@ See `test.js` for further usage.
 
 * All readable/writable stream methods.
 * `writeHead(statusCode, [reasonPhrase], [headers])` Sets the response status code, status message, and headers.  See also the [`http.ServerResponse` documentation](http://nodejs.org/api/http.html#http_response_writehead_statuscode_reasonphrase_headers).
+* `setHeader()`, `getHeader()`, `getHeaders()`, `removeHeader()`
 * `_getString()` Reads the body as a string, from the internal stream buffer.
 * `_getJSON()` Reads the body as a parsed JSON object, from the internal stream buffer.
