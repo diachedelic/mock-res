@@ -39,9 +39,11 @@ var tests = [
 		res.setHeader('Type', 'x');
 		assert.equal(res.getHeader('Type'), 'x');
 		assert.equal(res.getHeader('type'), 'x'); // case insensitive
+		assert.deepEqual(res.getHeaders(), { type: 'x' });
 
 		res.removeHeader('Type'); // case sensitive???
 		assert(!res.getHeader('type'));
+		assert.deepEqual(res.getHeaders(), {});
 
 		done();
 	},
