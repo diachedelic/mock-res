@@ -68,6 +68,7 @@ See `test.js` for further usage.
 			assert.equal(this.statusCode, 200);
 			assert.equal(this._getString(), '[{"id":0},{"id":1}]');
 			assert.deepEqual(this._getJSON(), [{id: 0 }, {id: 1 }]);
+			assert.deepEqual(this.getHeader('set-cookie'), ['a=1', 'b=2']);
 
 			res.pipe(process.stdout); // `res` is just a readable stream here
 

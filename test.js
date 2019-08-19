@@ -202,6 +202,16 @@ var tests = [
 
 		assert.strictEqual(res.finished, true);
 	},
+
+	function sets_cookies(done) {
+		var res = new MockResponse();
+
+		res.setHeader('Set-Cookie', ['a=1', 'b=2']);
+		res.statusCode = 200;
+		res.end();
+
+		assert.deepEqual(res.getHeader('set-cookie'), ['a=1', 'b=2']);
+	},
 ];
 
 var doneCount = 0;
