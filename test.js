@@ -16,7 +16,7 @@ var tests = [
 	function can_write_strings_and_buffers(done) {
 		var res = new MockResponse();
 		res.write('hello');
-		res.write(new Buffer('you', 'utf8'));
+		res.write(Buffer.from('you', 'utf8'));
 		res.end();
 
 		done();
