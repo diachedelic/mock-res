@@ -60,8 +60,8 @@ MockServerResponse.prototype.writeHead = function(statusCode, reason, headers) {
 	}
 };
 
-MockServerResponse.prototype._getString = function() {
-	return Buffer.concat(this._responseData).toString();
+MockServerResponse.prototype._getString = function(encoding) {
+	return Buffer.concat(this._responseData).toString(encoding || 'utf8');
 };
 
 MockServerResponse.prototype._getJSON = function() {
