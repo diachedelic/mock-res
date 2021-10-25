@@ -13,20 +13,18 @@ See `test.js` for further usage.
 	// Basic usage
 	var res = new MockRes();
 
-	// With callback for 'finish' event
-	var res = new MockRes(function() {
-		console.log('Response finished');
+	// Supply a callback to be called after res.end() is called
+	var res = new MockRes(function onEnd() {
+		console.log('Response sent');
 	});
 
-	// Or listen for stream events
-	res.on('error', function(err) {
-		console.error('Error: %s', err.stack);
-
+	// Listen for stream events
+	res.on('error', function (err) {
 		// If not listened for, the 'error' event will throw,
 		// as is true for any stream.
 	});
-	res.on('finish', function() {
-		console.log('Finished');
+	res.on('finish', function () {
+		console.log('Finished writing response');
 	});
 
 	// Read status code
@@ -56,13 +54,13 @@ See `test.js` for further usage.
 			url: '/foos'
 		}
 
-		var res = new MockRes(finish);
+		var res = new MockRes(onEnd);
 
 		/* Act */
 		list(req, res);
 
 		/* Assert */
-		function finish() {
+		function onEnd() {
 			// NOTE `this` === `res`
 
 			assert.equal(this.statusCode, 200);

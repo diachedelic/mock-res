@@ -14,9 +14,7 @@ function MockServerResponse(finish) {
 	this.statusMessage = STATUS_CODES[this.statusCode];
 
 	this._header = this._headers = {};
-	if (typeof finish === 'function')
-		this.on('finish', finish);
-
+	this._onEnd = finish;
 	this._responseData = []
 
 	this.finished = false;
@@ -71,6 +69,9 @@ MockServerResponse.prototype._getJSON = function() {
 MockServerResponse.prototype.end = function() {
 	Transform.prototype.end.apply(this, arguments);
 	this.finished = true;
+	if (this._onEnd !== undefined) {
+		this._onEnd.call(this);
+	}
 }
 
 /* Not implemented:

@@ -192,7 +192,7 @@ var tests = [
 	},
 
 	function sets_finished_after_end_called(done) {
-		var res = new MockResponse();
+		var res = new MockResponse(end);
 
 		assert.strictEqual(res.finished, false);
 
@@ -200,7 +200,10 @@ var tests = [
 		res.statusCode = 302;
 		res.end();
 
-		assert.strictEqual(res.finished, true);
+		function end() {
+			assert.strictEqual(this.finished, true);
+			done();
+		}
 	},
 
 	function sets_cookies(done) {
@@ -211,6 +214,7 @@ var tests = [
 		res.end();
 
 		assert.deepEqual(res.getHeader('set-cookie'), ['a=1', 'b=2']);
+		done();
 	},
 ];
 
